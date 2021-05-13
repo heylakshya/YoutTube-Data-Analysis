@@ -49,8 +49,8 @@ def getVideoInfo(id):
 			if tag.string != None and str_head2 in tag.string:
 				json_string = tag.string[tag.string.find(str_head2)+len(str_head2):-1]
 				json_data = json.loads(json_string)
-				with open("json-sample.json", "w") as f:
-					f.write(json_string)
+				# with open("json-sample.json", "w") as f:
+					# f.write(json_string)
 				break
 		
 		video_info["videoId"] = json_data["videoDetails"]["videoId"]
