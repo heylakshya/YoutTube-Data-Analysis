@@ -9,6 +9,7 @@ model_file = "./model/distilBERT"
 tokenizer_file = "./model/distilTokenizer"
 idx2vertidx_file = "./idx2verticalidx.json"
 
+
 tokenizer = DistilBertTokenizer.from_pretrained(tokenizer_file)
 model = TFDistilBertModel.from_pretrained(model_file)
 

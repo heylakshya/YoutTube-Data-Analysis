@@ -16,21 +16,32 @@ def getYtid(localId):
 	
 	return videoId
 
-def getVideoInfo(id):
-	url = "https://www.youtube.com/watch?v=" + id
+def getVideoInfo(id, byurl=False):
+	if byurl:
+		url = id
+	else:
+		url = "https://www.youtube.com/watch?v=" + id
+
 	page = requests.get(url)
 	soup = BeautifulSoup(page.content, 'html.parser')
 	soup.find_all("script", recursive=False)
 
 	str_head1 = "var ytInitialData = "
 	str_head2 = "var ytInitialPlayerResponse = "
+
+	json_data = None
+
+	if page.ok:
+		for tag in soup.find_all("script"):
+			if tag.string != None and str_head1 in tag.string:
+				json_string = tag.string[tag.string.find(str_head1)+len(str_head1):-1]
+				json_data = json.loads(json_string)
+				break
 	
-	for tag in soup.find_all("script"):
-		if tag.string != None and str_head1 in tag.string:
-			json_string = tag.string[tag.string.find(str_head1)+len(str_head1):-1]
-			json_data = json.loads(json_string)
-			break
-	
+	else:
+		print("video with id:{} responded with not OK".format(id))
+		return None
+		
 	video_info = {}
 
 	try:
